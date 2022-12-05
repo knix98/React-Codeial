@@ -1,12 +1,15 @@
+import PropTypes from 'prop-types';
+
 import styles from '../styles/home.module.css';
 
-const Home = ({ posts }) => {
-  //destructured the props initially only
+const Home = ({ posts }) => {//destructured the props initially only
   return (
     <div className={styles.postsList}>
+
       {posts.map((post) => {
         return (
-          <div className={styles.postWrapper}>
+          // 'key' prop is added below in div to solve the warning we were getting that every item in list should contain a key prop
+          <div className={styles.postWrapper} key={`post-${post._id}`}>
             <div className={styles.postHeader}>
               <div className={styles.postAvatar}>
                 <img
@@ -59,8 +62,15 @@ const Home = ({ posts }) => {
           </div>
         );
       })}
+
     </div>
   );
 };
+
+//doing props validation for the props coming to the Home component
+Home.propTypes = {
+  //setting: propType of posts should be array, and posts is required in props of Home(otherwise throw error)
+  posts: PropTypes.array.isRequired,
+}
 
 export default Home;
