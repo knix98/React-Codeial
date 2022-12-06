@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
 import { getPosts } from '../api/index';
-import { Home } from '../pages/index';
+import { Home, Login } from '../pages/index';
 import Loader from './Loader';
 import Navbar from './Navbar';
 
@@ -31,8 +33,13 @@ function App() {
 
   return (
     <div className="App">
-      <Navbar />
-      <Home posts={posts} />
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path='/' element={<Home posts={posts} />} />
+          <Route path='/login' element={<Login />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
