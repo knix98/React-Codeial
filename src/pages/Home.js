@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { Comment } from '../components/index';
 import styles from '../styles/home.module.css';
 
-const Home = ({ posts }) => {//destructured the props initially only
+const Home = ({ posts }) => {
+  //destructured the props initially only
   return (
     <div className={styles.postsList}>
-
       {posts.map((post) => {
         return (
           // 'key' prop is added below in div to solve the warning we were getting that every item in list should contain a key prop
@@ -47,17 +47,16 @@ const Home = ({ posts }) => {//destructured the props initially only
               </div>
 
               <div className={styles.postCommentsList}>
-
-                {post.comments.map((comment) => { return(
-                  <Comment comment={comment} key={`comment-${comment._id}`} />
-                )})}
-                
+                {post.comments.map((comment) => {
+                  return (
+                    <Comment comment={comment} key={`comment-${comment._id}`} />
+                  );
+                })}
               </div>
             </div>
           </div>
         );
       })}
-
     </div>
   );
 };
@@ -66,6 +65,6 @@ const Home = ({ posts }) => {//destructured the props initially only
 Home.propTypes = {
   //setting: propType of posts should be array, and posts is required in props of Home(otherwise throw error)
   posts: PropTypes.array.isRequired,
-}
+};
 
 export default Home;
