@@ -18,7 +18,8 @@ export const useAuth = () => {
 
 export const useProvideAuth = () => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); //this 'loading' state is for the first time only whenever AuthProvider component mounts
+  //and wud always remain false after the useEffect does its job after the first monuting(see below, useEffect sets loading to false)
 
   useEffect(() => {
     const userToken = getItemFromLocalStorage(LOCALSTORAGE_TOKEN_KEY);

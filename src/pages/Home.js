@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+
 import { Comment, Loader } from '../components/index';
 import { getPosts } from '../api';
 import styles from '../styles/home.module.css';
