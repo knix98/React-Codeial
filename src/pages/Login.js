@@ -40,6 +40,7 @@ const Login = () => {
           onChange={(e) => {
             setEmail(e.target.value);
           }}
+          autoComplete="on"
         />
       </div>
 
