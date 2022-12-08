@@ -1,9 +1,33 @@
-import PropTypes from 'prop-types';
-
-import { Comment } from '../components/index';
+import { useState, useEffect } from 'react';
+import { Comment, Loader } from '../components/index';
+import { getPosts } from '../api';
 import styles from '../styles/home.module.css';
 
-const Home = ({ posts }) => {
+const Home = () => {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    //making a function and then calling it, because the callback function passed to used effect has to be synchronous(so can't be async one)
+    const fetchPosts = async () => {
+      const response = await getPosts();
+      if (response.success) {
+        setPosts(response.data.posts);
+      }
+
+      setLoading(false); //even if response.success is false, we stop loading when fetch call completed
+    };
+
+    fetchPosts();
+  }, []);
+
+  //since the fetch call in useEffect wud be running asynchronously in the background after first render,
+  //we will show loader, and after fetch call completed, setLoading will set loading to false
+  //and then after setLoading, Home page will be re-rendered
+  if (loading) {
+    return <Loader />;
+  }
+
   //destructured the props initially only
   return (
     <div className={styles.postsList}>
@@ -59,12 +83,6 @@ const Home = ({ posts }) => {
       })}
     </div>
   );
-};
-
-//doing props validation for the props coming to the Home component
-Home.propTypes = {
-  //setting: propType of posts should be array, and posts is required in props of Home(otherwise throw error)
-  posts: PropTypes.array.isRequired,
 };
 
 export default Home;
