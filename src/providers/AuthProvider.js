@@ -2,14 +2,6 @@ import { createContext } from 'react';
 
 import { useProvideAuth } from '../hooks';
 
-// const initialState = {
-//   user: null,
-//   login: () => {},
-//   logout: () => {},
-//   loading: true, //if the user is currently being processed or not
-// };
-
-// export const AuthContext = createContext(initialState);
 export const AuthContext = createContext();
 
 //{children} is basically all the child nodes inside <AuthProvider></AuthProvider>
