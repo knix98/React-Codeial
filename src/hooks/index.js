@@ -136,6 +136,17 @@ export const useProvideAuth = () => {
       });
       return;
     }
+
+    //create a new friends array, excluding the friend to be removed
+    const newFriends = user.friends.filter(
+      (f) => f.to_user._id !== friend.to_user._id
+    );
+
+    setUser({
+      ...user,
+      friends: newFriends,
+    });
+    return;
   };
 
   return {

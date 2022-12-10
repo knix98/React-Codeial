@@ -6,7 +6,7 @@ import { toast } from 'react-hot-toast';
 import { Loader } from '../components';
 import styles from '../styles/settings.module.css';
 import { useAuth } from '../hooks';
-import { addFriend, fetchUserProfile } from '../api';
+import { addFriend, removeFriend, fetchUserProfile } from '../api';
 
 const UserProfile = () => {
   // //using useLocation we will be able to access the state object that is passed to the Link tag bringing us to this page
@@ -61,7 +61,25 @@ const UserProfile = () => {
     return false;
   };
 
-  const handleRemoveFriendClick = () => {};
+  const handleRemoveFriendClick = async () => {
+    setRequestInProgress(true);
+
+    const response = await removeFriend(userId);
+
+    if (response.success) {
+      //find the friendship to remove from auth.user.friends array
+      const friendship = auth.user.friends.filter(
+        (friend) => friend.to_user._id === userId
+      );
+
+      // .filter wud return a friendship array containing only 1 friend (that is the friend to be removed)
+      auth.updateUserFriends(false, friendship[0]);
+      toast.success('Friend removed successfully!');
+    } else {
+      toast.error(response.message);
+    }
+    setRequestInProgress(false);
+  };
 
   const handleAddFriendClick = async () => {
     setRequestInProgress(true);
