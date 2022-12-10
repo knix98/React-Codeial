@@ -20,7 +20,6 @@ const UserProfile = () => {
   const { userId } = useParams(); //getting the userId from the params of url of this page(/user/:userId)
   const navigate = useNavigate();
   const auth = useAuth();
-  console.log('auth', auth);
 
   //this useEffect hook will be executed whenever the userId changes
   //navigate is also passed in dependency array just to remove the warning
