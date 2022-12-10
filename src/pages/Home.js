@@ -1,43 +1,25 @@
 import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 
 import { Comment, Loader, FriendsList, CreatePost } from '../components/index';
-import { getPosts } from '../api';
 import styles from '../styles/home.module.css';
-import { useAuth } from '../hooks';
+import { useAuth, usePosts } from '../hooks';
 
 const Home = () => {
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
   const auth = useAuth();
+  const posts = usePosts();
 
-  useEffect(() => {
-    //making a function and then calling it, because the callback function passed to used effect has to be synchronous(so can't be async one)
-    const fetchPosts = async () => {
-      const response = await getPosts();
-      if (response.success) {
-        setPosts(response.data.posts);
-      }
-
-      setLoading(false); //even if response.success is false, we stop loading when fetch call completed
-    };
-
-    fetchPosts();
-  }, []);
-
-  //since the fetch call in useEffect wud be running asynchronously in the background after first render,
+  //since the fetch call in useEffect (inside useProvidePosts hook) wud be running asynchronously in the background after first render,
   //we will show loader, and after fetch call completed, setLoading will set loading to false
   //and then after setLoading, Home page will be re-rendered
-  if (loading) {
+  if (posts.loading) {
     return <Loader />;
   }
 
-  //destructured the props initially only
   return (
     <div className={styles.home}>
       <div className={styles.postsList}>
         <CreatePost />
-        {posts.map((post) => {
+        {posts.data.map((post) => {
           return (
             // 'key' prop is added below in div to solve the warning we were getting that every item in list should contain a key prop
             <div className={styles.postWrapper} key={`post-${post._id}`}>
