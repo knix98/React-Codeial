@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
-import { Comment, Loader, FriendsList } from '../components/index';
+import { Comment, Loader, FriendsList, CreatePost } from '../components/index';
 import { getPosts } from '../api';
 import styles from '../styles/home.module.css';
 import { useAuth } from '../hooks';
@@ -36,6 +36,7 @@ const Home = () => {
   return (
     <div className={styles.home}>
       <div className={styles.postsList}>
+        <CreatePost />
         {posts.map((post) => {
           return (
             // 'key' prop is added below in div to solve the warning we were getting that every item in list should contain a key prop
@@ -73,7 +74,7 @@ const Home = () => {
                       src="https://cdn-icons-png.flaticon.com/128/889/889140.png"
                       alt="likes-icon"
                     />
-                    <span>5</span>
+                    <span>{post.likes.length}</span>
                   </div>
 
                   <div className={styles.postCommentsIcon}>
