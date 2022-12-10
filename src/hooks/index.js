@@ -125,6 +125,19 @@ export const useProvideAuth = () => {
     setUser(null);
   };
 
+  //function to add/remove a friend from user.friends array, depending upon
+  //whether 'addFriend' passed as argument is true/false
+  const updateUserFriends = (addFriend, friend) => {
+    if (addFriend) {
+      setUser({
+        ...user,
+        //a 'friend' inside 'friends' array contains from_user: auth.user, to_user: 1 of the friends of auth.user
+        friends: [...user.friends, friend],
+      });
+      return;
+    }
+  };
+
   return {
     user,
     login,
@@ -132,5 +145,6 @@ export const useProvideAuth = () => {
     loading,
     signup,
     updateUser,
+    updateUserFriends,
   };
 };

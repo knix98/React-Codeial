@@ -6,7 +6,7 @@ import { toast } from 'react-hot-toast';
 import { Loader } from '../components';
 import styles from '../styles/settings.module.css';
 import { useAuth } from '../hooks';
-import { fetchUserProfile } from '../api';
+import { addFriend, fetchUserProfile } from '../api';
 
 const UserProfile = () => {
   // //using useLocation we will be able to access the state object that is passed to the Link tag bringing us to this page
@@ -15,10 +15,12 @@ const UserProfile = () => {
   // const { user = {} } = location.state;
 
   const [user, setUser] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); //for initial page loading when userProfile page mounted for first time
+  const [requestInProgress, setRequestInProgress] = useState(false); // for ongoing api request when adding/removing a friend. Will be used for add/remove friend button
   const { userId } = useParams(); //getting the userId from the params of url of this page(/user/:userId)
   const navigate = useNavigate();
   const auth = useAuth();
+  console.log('auth', auth);
 
   //this useEffect hook will be executed whenever the userId changes
   //navigate is also passed in dependency array just to remove the warning
@@ -59,6 +61,24 @@ const UserProfile = () => {
     return false;
   };
 
+  const handleRemoveFriendClick = () => {};
+
+  const handleAddFriendClick = async () => {
+    setRequestInProgress(true);
+
+    const response = await addFriend(userId);
+
+    if (response.success) {
+      const { friendship } = response.data;
+
+      auth.updateUserFriends(true, friendship);
+      toast.success('Friend added successfully!');
+    } else {
+      toast.error(response.message);
+    }
+    setRequestInProgress(false);
+  };
+
   if (loading) {
     return <Loader />;
   }
@@ -85,9 +105,21 @@ const UserProfile = () => {
 
       <div className={styles.btnGrp}>
         {checkIfUserIsAFriend() ? (
-          <button className={`button ${styles.saveBtn}`}>Remove friend</button>
+          <button
+            className={`button ${styles.saveBtn}`}
+            onClick={handleRemoveFriendClick}
+            disabled={requestInProgress}
+          >
+            {requestInProgress ? 'Removing friend...' : 'Remove friend'}
+          </button>
         ) : (
-          <button className={`button ${styles.saveBtn}`}>Add friend</button>
+          <button
+            className={`button ${styles.saveBtn}`}
+            onClick={handleAddFriendClick}
+            disabled={requestInProgress}
+          >
+            {requestInProgress ? 'Adding friend...' : 'Add friend'}
+          </button>
         )}
       </div>
     </div>
