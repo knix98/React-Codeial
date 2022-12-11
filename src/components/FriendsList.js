@@ -6,7 +6,6 @@ import { useAuth } from '../hooks';
 const FriendsList = () => {
   const auth = useAuth();
   const { friends = [] } = auth.user;
-  console.log(friends, auth.user);
 
   return (
     <div className={styles.friendsList}>
